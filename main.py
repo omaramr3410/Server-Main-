@@ -1,4 +1,5 @@
 import sys
+import mysql.connect
 
 def main():
 
@@ -18,13 +19,14 @@ def main():
 		spent = value+spent
 
 	remaining = income - spent
-	
+
 	maxRate = 0
 	sorted(debt,key=lambda debt: debt["percent"])
-	
+
 
 	for i in range(0,len(debt),1):
 		print(debt[i])
+
 	"""for (percent) in debt:
 		if debt[percent] > maxRate:
 			maxRate = debt[percent]
@@ -32,7 +34,20 @@ def main():
 			debt.remove(percent)
 
 	numDebt = len(debt)"""
-	
+
+
+
+	def getuser(userID):
+		cnx = mysql
+
+
+		connection=mysqk...
+		curor=connect.cursour
+		query="SELECT * FROM CapitalOne.SB"
+		cursur.execut(query)
+		for (userid,income,speed) in curur:
+			return {'userid':userid, "income":income}
+
 
 	print(maxRate)
 	print(*priority)
