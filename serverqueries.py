@@ -80,33 +80,25 @@ def addDebt(debtID,userID,InitalAmount,Remaining,MinimumPayment,DebtDescription)
 		return {'userid':userid, 'category':category, "amount of expenses":amount}
 
 
-
-#update 
-#def update():
-
-
-
-
-
-
-
-
-
-
-
-def addExpense(userID):
+def addExpense(userID,Category,Amount):
 	cnx= sql.connect(user='admin', password= 'password', host='database-capitolone.chz2sscroq0a.us-east-2.rds.amazonaws.com')
 
 	cursor = cnx.cursor()
 
-	insert_query = """INSERT INTO CapitolOneDB.DebtTable(debtid,userid,initalamount,remaining,minimumpayment,debtdescription) 
+	insert_query = """INSERT INTO CapitolOneDB.ExpenseTable(userid,category,amount) 
                            VALUES 
-                           (debtID,userID,InitialAmount,Remaining,MinimumPayment,debtDescription) """
+                           (userID,Category,Amount) """
 
 	cursor.execute(insert_query)
 
-	
 
+#update 
+def updateDebt():
+	cnx= sql.connect(user='admin', password= 'password', host='database-capitolone.chz2sscroq0a.us-east-2.rds.amazonaws.com')
+
+	cursor = cnx.cursor()
+
+	update_query = 
 print(getuser('12345'))
 
 print(getdebt('1'))
