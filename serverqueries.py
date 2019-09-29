@@ -42,19 +42,19 @@ def getdebt(debtID):
 	cnx.close()
 			
 
-
 #get the expenses
 def getexpenses(userID):
 	cnx= sql.connect(user='admin', password= 'password', host='database-capitolone.chz2sscroq0a.us-east-2.rds.amazonaws.com')
 
-	cursor = cnx.cursor
+	cursor = cnx.cursor()
 
-	query = ("SELECT * FROM CapitolOneDB.DebtTable where userid =" + userID)
+	query = ("SELECT * FROM CapitolOneDB.ExpenseTable where userid =" + userID)
 
 	cursor.execute(query)
 
 	for (userid,category,amount) in cursor:
-		return {'userid':userid, 'category':category, "amount of expenses":amount}
+		return {'userid':userid,'category':category, "amount":amount}
+
 
 #insert column 
 def insert():
@@ -66,8 +66,14 @@ def insert():
 
 	cursor.execute(query)
 
+	records=cursor.fetchall()
+
 	for (userid,category,amount) in cursor:
 		return {'userid':userid, 'category':category, "amount of expenses":amount}
+
+#update 
+#def update():
+
 
 
 
@@ -85,4 +91,6 @@ def addDebt(debtID,userID,InitalAmount,Remaining,MinimumPayment,DebtPayment):
 
 print(getuser('12345'))
 
-print(getdebt('123'))
+print(getdebt('12345'))
+
+print(getexpenses('12345'))
