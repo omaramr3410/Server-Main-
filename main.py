@@ -37,17 +37,6 @@ def main():
 
 
 
-	def getuser(userID):
-		cnx = mysql
-
-
-		connection=mysqk...
-		curor=connect.cursour
-		query="SELECT * FROM CapitalOne.SB"
-		cursur.execut(query)
-		for (userid,income,speed) in curur:
-			return {'userid':userid, "income":income}
-
 
 	print(maxRate)
 	print(*priority)
