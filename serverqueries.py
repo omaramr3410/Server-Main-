@@ -25,7 +25,7 @@ def getuser(userID):
 
 
 #get the debt
-def getdebt(debtID):
+def getdebt(userID):
 	cnx= sql.connect(user='admin', password= 'password', host='database-capitolone.chz2sscroq0a.us-east-2.rds.amazonaws.com')
 
 	cursor = cnx.cursor()
@@ -36,7 +36,7 @@ def getdebt(debtID):
 
 	debtslist = []
 	for (debtid,userid,initialamount1,remaining,minimumpayment,debtdescription) in cursor:
-		debtslist.append({'debtid':debtid,  "minimumpayment":minimumpayment, ""})
+		debtslist.append({'debtid':debtid,'userid':userid,'initalamount':initalamount, 'remaining': remaining,"minimumpayment":minimumpayment,"debtdescription":debtdescription})
 
 	cursor.close()
 
@@ -54,22 +54,25 @@ def getexpenses(userID):
 
 	cursor.execute(query)
 
-	
+	expenselist = []
 	for (userid,category,amount) in cursor:
-		return {'userid':userid,'category':category, "amount":amount}
+		expenselist.append({'userid':userid,'category':category, "amount":amount})
 
 	cursor.close()
 
 	cnx.close()	
 
-def addDebt(debtID,userID,InitalAmount,Remaining,MinimumPayment,DebtDescription):
+	return expenselist
+
+
+def addDebt(debtID,userID,initalamount,Remaining,MinimumPayment,DebtDescription):
 	cnx= sql.connect(user='admin', password= 'password', host='database-capitolone.chz2sscroq0a.us-east-2.rds.amazonaws.com')
 
 	cursor = cnx.cursor()
 
 	insert_query = """INSERT INTO CapitolOneDB.DebtTable(debtid,userid,initalamount,remaining,minimumpayment,debtdescription) 
                            VALUES 
-                           (debtID,userID,InitialAmount,Remaining,MinimumPayment,debtDescription) """
+                           (debtID,userID,initalamount,Remaining,MinimumPayment,DebtDescription) """
 
 	cursor.execute(insert_query)
 
@@ -77,10 +80,14 @@ def addDebt(debtID,userID,InitalAmount,Remaining,MinimumPayment,DebtDescription)
 
 	print("Successfully rcorded:")
 
-	number_of_rows =cursor.execute("SELECT * FROM CapitolOneDB.DebtTable where userID =" + userID)
+	cursor.execute("SELECT * FROM CapitolOneDB.DebtTable where userID =" + str(userID))
 
-	for i in range(number_of_rows):
-		print(row[i])
+	rows = cursor.fetchall()
+
+	#print("rows:"+str(rows))
+
+	for row in rows:
+		print(row)
 
 	for (userid,category,amount) in cursor:
 		return {'userid':userid, 'category':category, "amount of expenses":amount}
@@ -101,18 +108,20 @@ def addExpense(userID,Category,Amount):
 
 	cursor.execute(insert_query)
 
-
+"""
 #update 
 def updateDebt():
 	cnx= sql.connect(user='admin', password= 'password', host='database-capitolone.chz2sscroq0a.us-east-2.rds.amazonaws.com')
 
 	cursor = cnx.cursor()
+"""
 
-
-def generateSchedule(userID)
+def generateSchedule(userID):
 	expense = getexpense(userID)["category","amount"]
 	debt = getdebt(userID)["remaining"] 
 	income = getuser(userID)["income"] 
+
+
 
 
 
@@ -121,6 +130,6 @@ print(getuser('12345'))
 
 print(getdebt('1'))
 
-print(getexpenses('12345')
+print(getexpenses('12345'))
 
-addDebt(1,12345,5000,500,12,'Test')
+addDebt(1,12345,50000,5000,10,'check')
