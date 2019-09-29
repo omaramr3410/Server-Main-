@@ -13,7 +13,7 @@ def main():
 	#for index,value in enumerate(priority):
 
 	income = 1500
-	spent = 0
+	spent = 0	
 
 	for key, value in expense.items():
 		spent = value+spent
