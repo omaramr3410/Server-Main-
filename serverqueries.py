@@ -13,7 +13,7 @@ def getuser(userID):
 	cursor.execute(query)
 
 	for (userid, income, speed) in cursor:
-		return {'userid':userid, "income":income}
+		return {'userid':userid, "income":income, "speed":speed}
 
 
 	cursor.close()
@@ -56,20 +56,30 @@ def getexpenses(userID):
 		return {'userid':userid,'category':category, "amount":amount}
 
 
-#insert column 
-def insert():
+def addDebt(debtID,userID,InitalAmount,Remaining,MinimumPayment,DebtDescription):
 	cnx= sql.connect(user='admin', password= 'password', host='database-capitolone.chz2sscroq0a.us-east-2.rds.amazonaws.com')
 
-	cursor = cnx.cursor
+	cursor = cnx.cursor()
 
-	query = ("SELECT * FROM CapitolOneDB.DebtTable where userid =" + userID)
+	insert_query = """INSERT INTO CapitolOneDB.DebtTable(debtid,userid,initalamount,remaining,minimumpayment,debtdescription) 
+                           VALUES 
+                           (debtID,userID,InitialAmount,Remaining,MinimumPayment,debtDescription) """
 
-	cursor.execute(query)
+	cursor.execute(insert_query)
 
-	records=cursor.fetchall()
+	#records=cursor.fetchall()
+
+	print("Successfully rcorded:")
+
+	number_of_rows =cursor.execute("SELECT * FROM CapitolOneDB.DebtTable where userID =" + userID)
+
+	for i in range(number_of_rows):
+		print(row[i])
 
 	for (userid,category,amount) in cursor:
 		return {'userid':userid, 'category':category, "amount of expenses":amount}
+
+
 
 #update 
 #def update():
@@ -78,19 +88,29 @@ def insert():
 
 
 
-def addDebt(debtID,userID,InitalAmount,Remaining,MinimumPayment,DebtPayment):
+
+
+
+
+
+
+def addExpense(userID):
 	cnx= sql.connect(user='admin', password= 'password', host='database-capitolone.chz2sscroq0a.us-east-2.rds.amazonaws.com')
 
 	cursor = cnx.cursor()
 
-	query = ("INSERT INTO CapitolOneDB.DebtTable (debtid,userid,inital amount, remaining, minimum payment,debtdescription) \n VALUES (" +debtID+"+d)")
+	insert_query = """INSERT INTO CapitolOneDB.DebtTable(debtid,userid,initalamount,remaining,minimumpayment,debtdescription) 
+                           VALUES 
+                           (debtID,userID,InitialAmount,Remaining,MinimumPayment,debtDescription) """
 
-	cursor.execute(query)
+	cursor.execute(insert_query)
 
 	
 
 print(getuser('12345'))
 
-print(getdebt('12345'))
+print(getdebt('1'))
 
-print(getexpenses('12345'))
+print(getexpenses('12345')
+
+addDebt()
