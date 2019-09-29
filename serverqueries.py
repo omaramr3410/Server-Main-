@@ -1,7 +1,11 @@
 import mysql.connector as sql
-
+from flask import Flask, request, jsonify
+import random
 #get the user id and and user income
-def getuser(userID):
+app= Flask(__name__)
+@app.route('/user')
+def getUser():
+	userID=request.args.get('userid')
 	cnx= sql.connect(user='admin', password= 'password', host='database-capitolone.chz2sscroq0a.us-east-2.rds.amazonaws.com')
 
 	cursor = cnx.cursor()
@@ -13,7 +17,7 @@ def getuser(userID):
 	cursor.execute(query)
 
 	for (userid, income, speed) in cursor:
-		return {'userid':userid, "income":income, "speed":speed}
+		return jsonify({'userid':userid, "income":income, "speed":speed})
 
 
 	cursor.close()
@@ -25,7 +29,9 @@ def getuser(userID):
 
 
 #get the debt
-def getdebt(debtID):
+@app.route('/debts')
+def getDebts():
+	userID=request.args.get('userid')
 	cnx= sql.connect(user='admin', password= 'password', host='database-capitolone.chz2sscroq0a.us-east-2.rds.amazonaws.com')
 
 	cursor = cnx.cursor()
@@ -36,16 +42,18 @@ def getdebt(debtID):
 
 	debtslist = []
 	for (debtid,userid,initialamount1,remaining,minimumpayment,debtdescription) in cursor:
-		debtslist.append({'debtid':debtid,  "minimumpayment":minimumpayment, ""})
+		debtslist.append({'debtid':debtid,  "minimumpayment":minimumpayment})
 
 	cursor.close()
 
 	cnx.close()
 	
-	return debtslist	
+	return jsonify({'debts':debtslist})	
 
 #get the expenses
-def getexpenses(userID):
+@app.route('/expenses')
+def getexpenses():
+	userID=request.args.get('userid')
 	cnx= sql.connect(user='admin', password= 'password', host='database-capitolone.chz2sscroq0a.us-east-2.rds.amazonaws.com')
 
 	cursor = cnx.cursor()
@@ -54,15 +62,22 @@ def getexpenses(userID):
 
 	cursor.execute(query)
 
-	
+	expenses=[]
 	for (userid,category,amount) in cursor:
-		return {'userid':userid,'category':category, "amount":amount}
+		expenses.append({'userid':userid,'category':category, "amount":amount})
 
 	cursor.close()
 
 	cnx.close()	
-
-def addDebt(debtID,userID,InitalAmount,Remaining,MinimumPayment,DebtDescription):
+	return jsonify({'expenses':expenses})
+@app.route("/debt/add")
+def addDebt():
+	debtID=str(random.randint(1,1000000))
+	userID=request.args.get('userid')
+	InitialAmount=request.args.get('initalamount')
+	Remaining=request.args.get('remaining')
+	MinimumPayment=request.args.get('minimumpayment')
+	DebtDescription=request.args.get('debtdescription')
 	cnx= sql.connect(user='admin', password= 'password', host='database-capitolone.chz2sscroq0a.us-east-2.rds.amazonaws.com')
 
 	cursor = cnx.cursor()
@@ -77,13 +92,7 @@ def addDebt(debtID,userID,InitalAmount,Remaining,MinimumPayment,DebtDescription)
 
 	print("Successfully rcorded:")
 
-	number_of_rows =cursor.execute("SELECT * FROM CapitolOneDB.DebtTable where userID =" + userID)
-
-	for i in range(number_of_rows):
-		print(row[i])
-
-	for (userid,category,amount) in cursor:
-		return {'userid':userid, 'category':category, "amount of expenses":amount}
+	return ""
 
 	cursor.close()
 
@@ -109,7 +118,7 @@ def updateDebt():
 	cursor = cnx.cursor()
 
 
-def generateSchedule(userID)
+def generateSchedule(userID):
 	expense = getexpense(userID)["category","amount"]
 	debt = getdebt(userID)["remaining"] 
 	income = getuser(userID)["income"] 
@@ -117,10 +126,12 @@ def generateSchedule(userID)
 
 
 	#update_query = 
-print(getuser('12345'))
+#print(getuser('12345'))
 
-print(getdebt('1'))
+#print(getdebt('1'))
 
-print(getexpenses('12345')
+#print(getexpenses('12345')
 
-addDebt(1,12345,5000,500,12,'Test')
+#addDebt(1,12345,5000,500,12,'Test')
+if __name__=="__main__":
+	app.run()
