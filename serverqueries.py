@@ -30,17 +30,19 @@ def getdebt(debtID):
 
 	cursor = cnx.cursor()
 
-	query = ("SELECT * FROM CapitolOneDB.DebtTable where debtid =" + debtID)
+	query = ("SELECT * FROM CapitolOneDB.DebtTable where userid =" + userID)
 
 	cursor.execute(query)
 
+	debtslist = []
 	for (debtid,userid,initialamount1,remaining,minimumpayment,debtdescription) in cursor:
-		return {'debtid':debtid, "minimumpayment":minimumpayment}
+		debtslist.append({'debtid':debtid,  "minimumpayment":minimumpayment, ""})
 
 	cursor.close()
 
 	cnx.close()
-			
+	
+	return debtslist	
 
 #get the expenses
 def getexpenses(userID):
@@ -52,9 +54,13 @@ def getexpenses(userID):
 
 	cursor.execute(query)
 
+	
 	for (userid,category,amount) in cursor:
 		return {'userid':userid,'category':category, "amount":amount}
 
+	cursor.close()
+
+	cnx.close()	
 
 def addDebt(debtID,userID,InitalAmount,Remaining,MinimumPayment,DebtDescription):
 	cnx= sql.connect(user='admin', password= 'password', host='database-capitolone.chz2sscroq0a.us-east-2.rds.amazonaws.com')
@@ -79,6 +85,10 @@ def addDebt(debtID,userID,InitalAmount,Remaining,MinimumPayment,DebtDescription)
 	for (userid,category,amount) in cursor:
 		return {'userid':userid, 'category':category, "amount of expenses":amount}
 
+	cursor.close()
+
+	cnx.close()	
+
 
 def addExpense(userID,Category,Amount):
 	cnx= sql.connect(user='admin', password= 'password', host='database-capitolone.chz2sscroq0a.us-east-2.rds.amazonaws.com')
@@ -98,11 +108,19 @@ def updateDebt():
 
 	cursor = cnx.cursor()
 
-	update_query = 
+
+def generateSchedule(userID)
+	expense = getexpense(userID)["category","amount"]
+	debt = getdebt(userID)["remaining"] 
+	income = getuser(userID)["income"] 
+
+
+
+	#update_query = 
 print(getuser('12345'))
 
 print(getdebt('1'))
 
 print(getexpenses('12345')
 
-addDebt()
+addDebt(1,12345,5000,500,12,'Test')
